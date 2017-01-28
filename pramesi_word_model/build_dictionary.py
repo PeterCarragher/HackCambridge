@@ -18,7 +18,7 @@ import gensim as gs
 # https://radimrehurek.com/gensim/models/word2vec.html 
 
 # Load text and covert to lowercase
-filename = 'may_contributions.json'
+filename = 'input.json'
 with open(filename, 'rt') as f:
     contributions = json.load(f)
 text = ' '.join(contributions)
