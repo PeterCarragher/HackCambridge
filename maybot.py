@@ -36,7 +36,7 @@ goodbye_text  = "And they all lived happily ever after. The end."
 
 names = {}
 
-rand_names = ([name.lower() for name in names.words("male.txt")] + [name.lower() for name in names.words("female.txt")])
+rand_names = [name.lower() for name in names.words("male.txt")] + [name.lower() for name in names.words("female.txt")]
 rand_names.append("andreea")
 random.shuffle(rand_names)
 
