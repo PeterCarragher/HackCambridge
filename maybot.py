@@ -71,6 +71,7 @@ def hello(InitialWords):
 
     speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
 
+    speech_output = speech_output[:min(15,len(speech_output))]
     lastOutput = speech_output
 
     #substitute names back into speech_output
