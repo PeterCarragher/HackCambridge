@@ -22,7 +22,9 @@ from flask import Flask, render_template
 from flask_ask import Ask, question, statement
 from pramesi_word_model.create_sentence import create_sentence
 from nltk.tag import pos_tag
+from nltk.corpus import names
 import re
+import random
 app = Flask(__name__)
 ask = Ask(app, '/')
 
@@ -35,7 +37,9 @@ goodbye_text  = "And they all lived happily ever after. The end."
 
 names = {}
 
-rand_names = set()
+rand_names = ([name.lower() for name in names.words("male.txt")] + [name.lower() for name in names.words("female.txt")])
+rand_names.append("andreea")
+random.shuffle(rand_names)
 
 @ask.launch
 def welcome():
@@ -55,7 +59,21 @@ def hello(InitialWords):
 
     if InitialWords is None:
         InitialWords = ''
+
     speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
+
+    #substitute names back into speech_output
+    iters = [m.start() for m in re.finditer('person_', speech_output)]
+    for iter in iters:
+        personNum = int(speech_output[iter+7:iter+9])
+        name = ""
+        if personNum<len(names):
+            name = names[personNum]
+        else:
+            name = rand_names[personNum-len(names)]
+
+        speech_output = re.sub("person_"+str(personNum), name, speech_output)
+
     return question(speech_output).reprompt(reprompt_text).simple_card('CompleteSentenceIntent', speech_output)
 
 @ask.session_ended
