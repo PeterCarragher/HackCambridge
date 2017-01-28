@@ -74,16 +74,15 @@ def hello(InitialWords):
     lastOutput = speech_output
 
     #substitute names back into speech_output
-    iters = [m.start() for m in re.finditer('person_', speech_output)]
+    iters = map(int, re.findall("person_(\d+)", speech_output))
     for iter in iters:
-        personNum = int(speech_output[iter+7:iter+9])
         name = ""
-        if personNum<len(userNames):
-            name = userNames[personNum]
+        if iter<len(userNames):
+            name = userNames[iter]
         else:
-            name = rand_names[personNum-len(userNames)]
+            name = rand_names[iter-len(userNames)]
 
-        speech_output = re.sub("person_"+str(personNum), name, speech_output)
+        speech_output = re.sub("person_"+str(iter), name, speech_output)
 
 
     return question(speech_output).reprompt(reprompt_text).simple_card('CompleteSentenceIntent', speech_output)
