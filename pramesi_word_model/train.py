@@ -38,7 +38,7 @@ import sys
 vmodel = gs.models.Word2Vec.load('may2vec')
 
 # Load text
-filename = 'may_contributions.json'
+filename = 'input.json'
 with open(filename, 'rt') as f:
     contributions = json.load(f)
 text = ' '.join(contributions)
