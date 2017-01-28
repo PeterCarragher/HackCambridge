@@ -68,7 +68,7 @@ def replace_names(text):
         new.append(line)
     return new
 
-def concat(dir):
+def concat(dir,use_json=False):
     unique = set()
     r = re.compile('^[^c].*\.txt$')
     full = []
@@ -80,8 +80,11 @@ def concat(dir):
                 p = replace_names(p)
                 full += p
                 unique.add(f)
-    with open('input.json','w') as f:
-       json.dump(full, f) 
+    if use_json:
+        with open('input.json','w') as f:
+           json.dump(full, f) 
+    with open('input.txt','w') as f:
+        f.writelines(full)
 
 def name_main(dir):
     t = get_content(dir)
