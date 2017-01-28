@@ -34,7 +34,7 @@ reprompt_text = "What happens next?"
 
 goodbye_text  = "And they all lived happily ever after. The end."
 
-names = {}
+userNames = []
 
 rand_names = [name.lower() for name in names.words("male.txt")] + [name.lower() for name in names.words("female.txt")]
 rand_names.append("andreea")
@@ -51,7 +51,7 @@ def hello(InitialWords):
     global lastOutput
     #update names with new names
     tagged_sent = pos_tag(InitialWords.split())
-    [names.append(word) for word, pos in tagged_sent if pos == 'NNP' and word not in names]
+    [userNames.append(word) for word, pos in tagged_sent if pos == 'NNP' and word not in userNames]
 
     #substitute place holders into initialwords
     for name, pos in tagged_sent:
@@ -78,10 +78,10 @@ def hello(InitialWords):
     for iter in iters:
         personNum = int(speech_output[iter+7:iter+9])
         name = ""
-        if personNum<len(names):
-            name = names[personNum]
+        if personNum<len(userNames):
+            name = userNames[personNum]
         else:
-            name = rand_names[personNum-len(names)]
+            name = rand_names[personNum-len(userNames)]
 
         speech_output = re.sub("person_"+str(personNum), name, speech_output)
 
