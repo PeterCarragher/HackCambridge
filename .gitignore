@@ -2,4 +2,4 @@
 *.hdf5
 *.pickle
 *.h5
-
+hackathon/**/*

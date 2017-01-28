@@ -1,0 +1,17 @@
+ run
+ black
+ tear
+ live
+ stay
+ grow
+ evening
+ leave
+ understand
+ song
+ hold
+ dish
+ horse
+ skin
+ choose
+ pleasure
+ flower

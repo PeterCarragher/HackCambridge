@@ -1,0 +1,5 @@
+for dd in `ls`; do
+   ls $dd|wc -l
+   echo "$dd"|tr "\n" "    " 
+   ls $dd|wc -l
+done
