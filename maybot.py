@@ -42,6 +42,12 @@ random.shuffle(rand_names)
 
 lastOutput = welcome_text
 
+def findnth(haystack, needle, n):
+    parts= haystack.split(needle, n+1)
+    if len(parts)<=n+1:
+        return -1
+    return len(haystack)-len(parts[-1])-len(needle)
+
 @ask.launch
 def welcome():
     return question(welcome_text).reprompt(reprompt_text).simple_card('Welcome', welcome_text)
@@ -51,7 +57,11 @@ def hello(InitialWords):
     global lastOutput
 
     if InitialWords is None:
-        InitialWords = ""
+        if len(lastOutput) > 12:
+            InitialWords = lastOutput.split()[-12:]
+            speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
+            lastOutput = speech_output
+            return question(speech_output).reprompt(reprompt_text).simple_card('CompleteSentenceIntent', speech_output)
 
     print("heard: " + InitialWords)
 
@@ -91,16 +101,25 @@ def hello(InitialWords):
 
     #find fullstop
     fullstops = speech_output.find(".")
-    numWordsToFullStop = 0
+    numWordsToFullStop = -1
     if fullstops > 0:
         numWordsToFullStop = len((speech_output[:fullstops]).split())
 
     maxLen = 20
 
     #if fullstop found, remove everything after
-    if fullstops >= 0 and numWordsToFullStop < maxLen:
+    if numWordsToFullStop < 0 and numWordsToFullStop > 5:
+        #continue to second full stop
+        secondStop = findnth(speech_output, ".", 2)
+        numWordsToSecondStop = -1
+        if secondStop > 0:
+            numWordsToSecondStop = len((speech_output[:secondStop]).split())
+        if numWordsToSecondStop > 0 and numWordsToSecondStop < 20:
+            speech_output = speech_output[:secondStop]
+    elif numWordsToFullStop < maxLen:
         speech_output = speech_output[:fullstops]
-    elif len(speech_output) > maxLen: # set limit output to 20 words
+
+    if len(speech_output) > maxLen: # set limit output to 20 words
         speech_output = space.join(speech_output.split()[:maxLen])
 
     #substitute names back into speech_output
