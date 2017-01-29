@@ -99,6 +99,8 @@ def hello(InitialWords):
     if lastIter > 0:
         speech_output = speech_output[lastIter+len(lastInitialWord)+1:]
 
+    print("wo last input: "+speech_output)
+
     #find fullstop
     fullstops = speech_output.find(".")
     numWordsToFullStop = -1
@@ -119,8 +121,13 @@ def hello(InitialWords):
     elif numWordsToFullStop < maxLen:
         speech_output = speech_output[:fullstops]
 
+    print("fullstop: "+speech_output)
+
+
     if len(speech_output) > maxLen: # set limit output to 20 words
         speech_output = space.join(speech_output.split()[:maxLen])
+
+    print("capped: "+speech_output)
 
     #substitute names back into speech_output
     iters = map(int, re.findall("person_(\d+)", speech_output))
