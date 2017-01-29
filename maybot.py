@@ -55,6 +55,7 @@ def welcome():
 @ask.intent('CompleteSentenceIntent')
 def hello(InitialWords):
     global lastOutput
+    print("initial: " + InitialWords)
 
     if InitialWords is None:
         if len(lastOutput.split()) > 12:
