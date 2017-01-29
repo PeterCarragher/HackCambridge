@@ -53,7 +53,6 @@ def hello(InitialWords):
     if InitialWords is None:
         InitialWords = ""
 
-
     print("heard: " + InitialWords)
 
     # update names with new names
@@ -65,19 +64,16 @@ def hello(InitialWords):
         if pos == 'NNP':
             InitialWords = re.sub(name, "person_"+str(userNames.index(name)), InitialWords)
 
-    if InitialWords is None:
-        InitialWords = ''
-
     space = " "
 
     #add 12-givenWords from lastOutput to InitialWords
     if len(InitialWords.split())<12:
         lastList = lastOutput.split()
         numWordsNeeded = 12 - len(InitialWords.split())
-        listNeeded = lastList[len(lastList)-numWordsNeeded:]
+        listNeeded = lastList[-numWordsNeeded:]
         InitialWords = space.join(listNeeded) + " " + InitialWords
     else:
-        InitialWords = InitialWords[:12]
+        InitialWords = InitialWords[-12:]
 
     print("sending: " + InitialWords)
 
@@ -85,25 +81,27 @@ def hello(InitialWords):
 
     print("recieved: "+speech_output)
 
+    #find last word from input to remove input from output
     lastInitialWord = InitialWords.split()[-1]
     lastIter = speech_output.find(lastInitialWord)
 
+    #if last word of input found, remove all input from output
     if lastIter > 0:
         speech_output = speech_output[lastIter+len(lastInitialWord)+1:]
 
-
+    #find fullstop
     fullstops = speech_output.find(".")
     numWordsToFullStop = 0
     if fullstops > 0:
-        numWordsToFullStop = len(speech_output[:fullstops].split())
+        numWordsToFullStop = len((speech_output[:fullstops]).split())
 
     maxLen = 20
 
+    #if fullstop found, remove everything after
     if fullstops >= 0 and numWordsToFullStop < maxLen:
         speech_output = speech_output[:fullstops]
-    else:
-        speech_output = space.join(speech_output.split()[:min(maxLen,len(speech_output))])
-    lastOutput = speech_output
+    elif len(speech_output) > maxLen: # set limit output to 20 words
+        speech_output = space.join(speech_output.split()[:maxLen])
 
     #substitute names back into speech_output
     iters = map(int, re.findall("person_(\d+)", speech_output))
@@ -115,6 +113,9 @@ def hello(InitialWords):
             name = rand_names[iter-len(userNames)]
 
         speech_output = re.sub("person_"+str(iter), name, speech_output)
+
+    #save last output for next iteration
+    lastOutput = speech_output
 
     print("saying: " + speech_output)
 
