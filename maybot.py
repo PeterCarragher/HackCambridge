@@ -50,10 +50,11 @@ def welcome():
 def hello(InitialWords):
     global lastOutput
 
-    print("heard: " + InitialWords)
-
     if InitialWords is None:
         InitialWords = ""
+
+
+    print("heard: " + InitialWords)
 
     # update names with new names
     tagged_sent = pos_tag(InitialWords.split())
