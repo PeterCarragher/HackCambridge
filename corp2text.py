@@ -3,6 +3,7 @@ import os
 from collections import defaultdict
 import numpy as np
 import json
+from sys import argv
 
 def get_content(file):
     '''
@@ -19,7 +20,7 @@ def get_content(file):
     text.pop(0)
     return text
 
-def parse(text, lim=100):
+def parse(text, lim):
     '''
     Removes tags from text
     '''
@@ -33,9 +34,10 @@ def parse(text, lim=100):
     out = []
     for l in quote:
         lines = filter(bool,l.split('.'))
-        dotted = ["%s.\n" % s.strip() for s in lines[:-1] if len(s)<lim]
+        dotted = ["%s.\n" % s.strip() for s in lines[:-1] if len(s.split(' '))<lim]
         if lines:
-            dotted.append("%s\"\n" % lines[-1].strip())
+            if len(lines[-1].split())<lim:
+                dotted.append("%s\"\n" % lines[-1].strip())
         out += dotted
 
     return out
@@ -68,7 +70,7 @@ def replace_names(text):
         new.append(line)
     return new
 
-def concat(dir,use_json=True):
+def concat(dir, out, lim, use_json=True):
     unique = set()
     r = re.compile('^[^c].*\.txt$')
     full = []
@@ -76,20 +78,17 @@ def concat(dir,use_json=True):
         for f in files:
             if r.match(f) and f not in unique:
                 t = get_content("%s/%s" % (path, f))
-                p = parse(t)
+                p = parse(t,lim)
                 p = replace_names(p)
                 full += p
                 unique.add(f)
     if use_json:
-        with open('input.json','w') as f:
+        with open(out,'w') as f:
            json.dump(full, f) 
-    with open('input.txt','w') as f:
+    with open(out,'w') as f:
         f.writelines(full)
 
-def name_main(dir):
-    t = get_content(dir)
-    p = parse(t)
-    return get_names(p)
-
 if __name__ == '__main__':
-   concat('corpus-map') 
+    out = argv[1]
+    size = int(argv[2])
+    concat('corpus-map', out, size)
