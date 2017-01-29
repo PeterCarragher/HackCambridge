@@ -56,7 +56,7 @@ def hello(InitialWords):
     #substitute place holders into initialwords
     for name, pos in tagged_sent:
         if pos == 'NNP':
-            InitialWords = re.sub(name, "person_"+str(names.index(name)), InitialWords)
+            InitialWords = re.sub(name, "person_"+str(userNames.index(name)), InitialWords)
 
     if InitialWords is None:
         InitialWords = ''
