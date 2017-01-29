@@ -76,10 +76,12 @@ def hello(InitialWords):
     if fullstops > 0:
         numWordsToFullStop = len(speech_output[:fullstops].split())
 
-    if fullstops >= 0 and numWordsToFullStop < 25:
+    maxLen = 20
+
+    if fullstops >= 0 and numWordsToFullStop < maxLen:
         speech_output = speech_output[:fullstops]
     else:
-        speech_output = space.join(speech_output.split()[:min(25,len(speech_output))])
+        speech_output = space.join(speech_output.split()[:min(maxLen,len(speech_output))])
     lastOutput = speech_output
 
     #substitute names back into speech_output
