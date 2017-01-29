@@ -69,8 +69,16 @@ def hello(InitialWords):
         numWordsNeeded = 12 - len(InitialWords.split())
         listNeeded = lastList[len(lastList)-numWordsNeeded:]
         InitialWords = space.join(listNeeded) + " " + InitialWords
+    else:
+        InitialWords = InitialWords[:12]
+
 
     speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
+    semi_colon = speech_output.find(";")
+
+    if semi_colon > 0:
+        speech_output = speech_output[semi_colon+1:]
+
     fullstops = speech_output.find(".")
     numWordsToFullStop = 0
     if fullstops > 0:
