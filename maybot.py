@@ -68,7 +68,7 @@ def hello(InitialWords):
         lastList = lastOutput.split()
         numWordsNeeded = 12 - len(InitialWords.split())
         listNeeded = lastList[len(lastList)-numWordsNeeded:]
-        InitialWords += space.join(listNeeded)
+        InitialWords = space.join(listNeeded) + InitialWords
 
     speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
     speech_output = space.join(speech_output.split()[:min(15,len(speech_output))])
