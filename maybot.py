@@ -61,17 +61,17 @@ def hello(InitialWords):
     if InitialWords is None:
         InitialWords = ''
 
+    space = " "
+
     #add 12-givenWords from lastOutput to InitialWords
     if len(InitialWords.split())<12:
         lastList = lastOutput.split()
         numWordsNeeded = 12 - len(InitialWords.split())
         listNeeded = lastList[len(lastList)-numWordsNeeded:]
-        space = " "
         InitialWords += space.join(listNeeded)
 
     speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
-
-    speech_output = speech_output[:min(15,len(speech_output))]
+    speech_output = space.join(speech_output.split()[:min(15,len(speech_output))])
     lastOutput = speech_output
 
     #substitute names back into speech_output
