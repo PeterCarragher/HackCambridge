@@ -89,13 +89,8 @@ def hello(InitialWords):
 
     print("recieved: "+speech_output)
 
-    #find last word from input to remove input from output
-    lastInitialWord = InitialWords.split()[-1]
-    lastIter = speech_output.find(lastInitialWord)
-
     #if last word of input found, remove all input from output
-    if lastIter > 0:
-        speech_output = speech_output[lastIter+len(lastInitialWord)+1:]
+    speech_output = speech_output[len(InitialWords):]
 
     print("wo last input: "+speech_output)
 
