@@ -71,7 +71,7 @@ def hello(InitialWords):
         InitialWords = space.join(listNeeded) + InitialWords
 
     speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
-    fullstops = re.findall(".", speech_output)
+    fullstops = re.finditer("\.", speech_output)
     if len(fullstops) > 0:
         speech_output = speech_output[:fullstops[0]]
     else:
