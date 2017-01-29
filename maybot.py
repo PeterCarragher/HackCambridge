@@ -57,7 +57,7 @@ def hello(InitialWords):
     global lastOutput
 
     if InitialWords is None:
-        if len(lastOutput) > 12:
+        if len(lastOutput.split()) > 12:
             InitialWords = lastOutput.split()[-12:]
             speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
             lastOutput = speech_output
@@ -82,12 +82,10 @@ def hello(InitialWords):
         numWordsNeeded = 12 - len(InitialWords.split())
         listNeeded = lastList[-numWordsNeeded:]
         InitialWords = space.join(listNeeded) + " " + InitialWords
-    else:
-        InitialWords = InitialWords[-12:]
 
     print("sending: " + InitialWords)
 
-    speech_output = create_sentence("forget " + InitialWords, seed=0, diversity=0.0)
+    speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
 
     print("recieved: "+speech_output)
 
@@ -107,24 +105,24 @@ def hello(InitialWords):
     if fullstops > 0:
         numWordsToFullStop = len((speech_output[:fullstops]).split())
 
-    maxLen = 20
+    maxLen = 25
 
     #if fullstop found, remove everything after
-    if numWordsToFullStop > 0 and numWordsToFullStop < 5:
+    if numWordsToFullStop > 0 and numWordsToFullStop < 7:
         #continue to second full stop
         secondStop = findnth(speech_output, ".", 2)
         numWordsToSecondStop = -1
         if secondStop > 0:
             numWordsToSecondStop = len((speech_output[:secondStop]).split())
-        if numWordsToSecondStop > 0 and numWordsToSecondStop < 20:
-            speech_output = speech_output[:secondStop]
-    elif numWordsToFullStop < maxLen:
+            if  numWordsToSecondStop < maxLen:
+                speech_output = speech_output[:secondStop]
+    elif numWordsToFullStop >= 7 and numWordsToFullStop < maxLen:
         speech_output = speech_output[:fullstops]
 
     print("fullstop: "+speech_output)
 
 
-    if len(speech_output) > maxLen: # set limit output to 20 words
+    if len(speech_output.split()) > maxLen: # set limit output to 20 words
         speech_output = space.join(speech_output.split()[:maxLen])
 
     print("capped: "+speech_output)
