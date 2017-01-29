@@ -85,8 +85,9 @@ def concat(dir, out, lim, use_json=True):
     if use_json:
         with open(out,'w') as f:
            json.dump(full, f) 
-    with open(out,'w') as f:
-        f.writelines(full)
+    else:
+        with open(out,'w') as f:
+            f.writelines(full)
 
 if __name__ == '__main__':
     out = argv[1]
