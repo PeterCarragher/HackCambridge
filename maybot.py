@@ -49,7 +49,9 @@ def welcome():
 @ask.intent('CompleteSentenceIntent')
 def hello(InitialWords):
     global lastOutput
-    
+
+    print("heard: " + InitialWords)
+
     if InitialWords is None:
         InitialWords = ""
 
@@ -76,12 +78,18 @@ def hello(InitialWords):
     else:
         InitialWords = InitialWords[:12]
 
+    print("sending: " + InitialWords)
 
     speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
-    semi_colon = speech_output.find(InitialWords[10:])
 
-    if semi_colon > 0:
-        speech_output = speech_output[semi_colon+2:]
+    print("recieved: "+speech_output)
+
+    lastInitialWord = InitialWords.split()[-1]
+    lastIter = speech_output.find(lastInitialWord)
+
+    if lastIter > 0:
+        speech_output = speech_output[lastIter+len(lastInitialWord)+1:]
+
 
     fullstops = speech_output.find(".")
     numWordsToFullStop = 0
@@ -107,6 +115,7 @@ def hello(InitialWords):
 
         speech_output = re.sub("person_"+str(iter), name, speech_output)
 
+    print("saying: " + speech_output)
 
     return question(speech_output).reprompt(reprompt_text).simple_card('CompleteSentenceIntent', speech_output)
 
