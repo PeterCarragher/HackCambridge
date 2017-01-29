@@ -20,6 +20,25 @@ def get_content(file):
     text.pop(0)
     return text
 
+
+def cinderella():
+    with open("cbt_train.txt") as input:
+        text = [line.strip('\n')  for line in input.readlines() if len(line.split())<28 and len(line.split())>6 ]
+        ids = {}
+        i = 0
+        for name in get_names(text):
+            ids[name] = i
+            i += 1
+
+        fullText = "-----".join(text)
+
+        fullText = re.sub("Cinderella", 'person_%d' % 0, fullText)
+        text = fullText.split("-----")
+
+    with open("cinderella.json", "w") as output:
+     json.dump(text,output)
+
+
 def parse(text, lim):
     '''
     Removes tags from text

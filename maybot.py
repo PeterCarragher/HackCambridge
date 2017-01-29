@@ -55,6 +55,7 @@ def welcome():
 @ask.intent('CompleteSentenceIntent')
 def hello(InitialWords):
     global lastOutput
+
     print("initial: " + InitialWords)
 
     if InitialWords is None:
@@ -63,8 +64,6 @@ def hello(InitialWords):
             speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
             lastOutput = speech_output
             return question(speech_output).reprompt(reprompt_text).simple_card('CompleteSentenceIntent', speech_output)
-
-    print("heard: " + InitialWords)
 
     # update names with new names
     tagged_sent = pos_tag(InitialWords.split())
@@ -84,16 +83,10 @@ def hello(InitialWords):
         listNeeded = lastList[-numWordsNeeded:]
         InitialWords = space.join(listNeeded) + " " + InitialWords
 
-    print("sending: " + InitialWords)
-
     speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
-
-    print("recieved: "+speech_output)
 
     #if last word of input found, remove all input from output
     speech_output = speech_output[len(InitialWords):]
-
-    print("wo last input: "+speech_output)
 
     #find fullstop
     fullstops = speech_output.find(".")
@@ -115,13 +108,9 @@ def hello(InitialWords):
     elif numWordsToFullStop >= 7 and numWordsToFullStop < maxLen:
         speech_output = speech_output[:fullstops]
 
-    print("fullstop: "+speech_output)
-
 
     if len(speech_output.split()) > maxLen: # set limit output to 20 words
         speech_output = space.join(speech_output.split()[:maxLen])
-
-    print("capped: "+speech_output)
 
     #substitute names back into speech_output
     iters = map(int, re.findall("person_(\d+)", speech_output))
@@ -136,6 +125,11 @@ def hello(InitialWords):
 
     #save last output for next iteration
     lastOutput = speech_output
+
+    #remove duplicate words
+    #listDups = speech_output.split()
+
+
 
     print("saying: " + speech_output)
 

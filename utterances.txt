@@ -1,1 +1,1 @@
-CompleteSentenceIntent complete {InitialWords}
+CompleteSentenceIntent {InitialWords}

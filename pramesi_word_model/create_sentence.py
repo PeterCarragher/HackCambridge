@@ -113,7 +113,7 @@ def create_sentence(input_text, seed=None, diversity=0.0):
         output += next_word
         x_D[0,0:-1] = x_D[0,1:]
         x_D[0,-1:] = vmodel[next_word]
-        if iteration > 50 and next_word in ['.', '!', '?']:
+        if iteration > 30 and next_word in ['.', '!', '?']:
             break
 
     t2 = time.time()
