@@ -72,7 +72,11 @@ def hello(InitialWords):
 
     speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
     fullstops = speech_output.find(".")
-    if fullstops >= 0:
+    numWordsToFullStop = 0
+    if fullstops > 0:
+        numWordsToFullStop = len(speech_output[:fullstops].split())
+
+    if fullstops >= 0 and numWordsToFullStop < 25:
         speech_output = speech_output[:fullstops]
     else:
         speech_output = space.join(speech_output.split()[:min(25,len(speech_output))])
