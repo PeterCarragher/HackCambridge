@@ -126,7 +126,10 @@ bn2_right = BatchNormalization()(lstm1_right)
 lstm3_left = LSTM(lstm_hdim, return_sequences=False)(bn2_left)
 lstm3_right = LSTM(lstm_hdim, return_sequences=False, go_backwards=True)(bn2_right)
 
-merge1 = merge([lstm3_left, lstm3_right], mode='concat')
+lstm4_left = LSTM(lstm_hdim, return_sequences=False)(lstm3_left)
+lstm4_right = LSTM(lstm_hdim, return_sequences=False, go_backwards=True)(lstm3_right)
+
+merge1 = merge([lstm4_left, lstm4_right], mode='concat')
 bn4 = BatchNormalization()(merge1)
 dropout1 = Dropout(0.2)(bn4)
 

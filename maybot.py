@@ -87,7 +87,7 @@ def hello(InitialWords):
 
     print("sending: " + InitialWords)
 
-    speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
+    speech_output = create_sentence("forget " + InitialWords, seed=0, diversity=0.0)
 
     print("recieved: "+speech_output)
 
