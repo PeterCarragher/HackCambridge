@@ -19,7 +19,7 @@ def get_content(file):
     text.pop(0)
     return text
 
-def parse(text):
+def parse(text, lim=100):
     '''
     Removes tags from text
     '''
@@ -33,7 +33,7 @@ def parse(text):
     out = []
     for l in quote:
         lines = filter(bool,l.split('.'))
-        dotted = ["%s.\n" % s.strip() for s in lines[:-1] if s]
+        dotted = ["%s.\n" % s.strip() for s in lines[:-1] if len(s)<lim]
         if lines:
             dotted.append("%s\"\n" % lines[-1].strip())
         out += dotted
@@ -68,7 +68,7 @@ def replace_names(text):
         new.append(line)
     return new
 
-def concat(dir,use_json=False):
+def concat(dir,use_json=True):
     unique = set()
     r = re.compile('^[^c].*\.txt$')
     full = []
