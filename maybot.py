@@ -49,7 +49,11 @@ def welcome():
 @ask.intent('CompleteSentenceIntent')
 def hello(InitialWords):
     global lastOutput
-    #update names with new names
+    
+    if InitialWords is None:
+        InitialWords = ""
+
+    # update names with new names
     tagged_sent = pos_tag(InitialWords.split())
     [userNames.append(word) for word, pos in tagged_sent if pos == 'NNP' and word not in userNames]
 
