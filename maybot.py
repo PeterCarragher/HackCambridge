@@ -74,10 +74,10 @@ def hello(InitialWords):
 
 
     speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
-    semi_colon = speech_output.find(";")
+    semi_colon = speech_output.find(InitialWords[10:])
 
     if semi_colon > 0:
-        speech_output = speech_output[semi_colon+1:]
+        speech_output = speech_output[semi_colon+2:]
 
     fullstops = speech_output.find(".")
     numWordsToFullStop = 0
