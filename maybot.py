@@ -110,7 +110,7 @@ def hello(InitialWords):
     maxLen = 20
 
     #if fullstop found, remove everything after
-    if numWordsToFullStop < 0 and numWordsToFullStop > 5:
+    if numWordsToFullStop > 0 and numWordsToFullStop < 5:
         #continue to second full stop
         secondStop = findnth(speech_output, ".", 2)
         numWordsToSecondStop = -1
