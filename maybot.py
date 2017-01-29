@@ -71,8 +71,8 @@ def hello(InitialWords):
         InitialWords = space.join(listNeeded) + InitialWords
 
     speech_output = create_sentence(InitialWords, seed=0, diversity=0.0)
-    fullstops = re.finditer("\.", speech_output)
-    if len(fullstops) > 0:
+    fullstops = speech_output.find(".")
+    if fullstops >= 0:
         speech_output = speech_output[:fullstops[0]]
     else:
         speech_output = space.join(speech_output.split()[:min(25,len(speech_output))])
