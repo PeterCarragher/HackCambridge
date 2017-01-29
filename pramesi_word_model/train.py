@@ -123,8 +123,8 @@ bn2_left = BatchNormalization()(lstm1_left)
 lstm1_right = LSTM(lstm_hdim, return_sequences=True, go_backwards=True)(bn1)
 bn2_right = BatchNormalization()(lstm1_right)
 
-lstm3_left = LSTM(lstm_hdim, return_sequences=False)(bn2_left)
-lstm3_right = LSTM(lstm_hdim, return_sequences=False, go_backwards=True)(bn2_right)
+lstm3_left = LSTM(lstm_hdim, return_sequences=True)(bn2_left)
+lstm3_right = LSTM(lstm_hdim, return_sequences=True, go_backwards=True)(bn2_right)
 
 lstm4_left = LSTM(lstm_hdim, return_sequences=False)(lstm3_left)
 lstm4_right = LSTM(lstm_hdim, return_sequences=False, go_backwards=True)(lstm3_right)
